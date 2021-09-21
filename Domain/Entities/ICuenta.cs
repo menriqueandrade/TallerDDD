@@ -13,6 +13,8 @@ namespace Domain.Entities
 
         void Consignar(double valor, string ciudad);
         void Retirar(double valor, string ciudad);
-       
+        void GuardarMovimieto(string tipo, double valorRetiro, double valorConsignacion, string ciudad);
+
+
     }
 }

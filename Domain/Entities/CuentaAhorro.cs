@@ -67,7 +67,7 @@ namespace Domain.Entities
                 { 
                     consignaciones.Add(consignacion);
                     SaldoCuenta = SaldoCuenta + valor;
-                    GuardarMovimieto("Consignacion",consignacion.ValorConsignacion,0,ciudad);
+                    GuardarMovimieto("Consignacion cuenta de ahorro",consignacion.ValorConsignacion,0,ciudad);
                 }
             }
         }
@@ -124,7 +124,7 @@ namespace Domain.Entities
                 {
                     SaldoCuenta = SaldoCuenta - valor;
                     this.retiros.Add(retiro);
-                    GuardarMovimieto("Retiro", 0, retiro.ValorRetiro, ciudad);
+                    GuardarMovimieto("Retiro cuenta de ahorro", 0, retiro.ValorRetiro, ciudad);
                 }
             }
         }
