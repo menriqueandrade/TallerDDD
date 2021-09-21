@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using Domain.Base;
 
 namespace Domain.Entities
 {
-    public class TarjetaCredito
+    public class TarjetaCredito : Entity<int>
     {
         public string NumeroTarjeta { get; set; }
         public string CVV { get; set; }

@@ -57,6 +57,7 @@ namespace Domain.Entities
                     {
                         consignaciones.Add(consignacion);
                         SaldoCuenta = SaldoCuenta + valor;
+                        GuardarMovimieto("Consignacion cuenta de ahorro", consignacion.ValorConsignacion, 0, ciudad);
                     }
                     else
                     {
