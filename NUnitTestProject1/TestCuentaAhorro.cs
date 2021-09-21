@@ -60,6 +60,51 @@ namespace Domain.Test
             Assert.AreEqual(cuenta.SaldoCuenta, 89950);
         }
 
-      
+        [Test]
+        public void RetiroNegativo()
+        {
+            cuenta.SaldoCuenta = 50000;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cuenta.Retirar(-20000, "valledupar"));
+            Assert.AreEqual(ex.Message, "El retiro debe de ser mayor a 0");
+        }
+
+        [Test]
+        public void RetiroCorrecto()
+        {
+            cuenta.SaldoCuenta = 50000;
+            cuenta.Retirar(20000, "valledupar");
+            Assert.AreEqual(cuenta.SaldoCuenta, 30000);
+        }
+
+        [Test]
+        public void RetiroCorrecto2()
+        {
+            cuenta.SaldoCuenta = 100000;
+            cuenta.Retirar(20000, "valledupar");
+            cuenta.Retirar(20000, "valledupar");
+            cuenta.Retirar(20000, "valledupar");
+            cuenta.Retirar(5000, "valledupar");
+            Assert.AreEqual(cuenta.SaldoCuenta, 30000);
+        }
+
+        [Test]
+        public void RetiroInCorrecto()
+        {
+            cuenta.SaldoCuenta = 50000;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cuenta.Retirar(40000, "valledupar"));
+            Assert.AreEqual(ex.Message, "No se puede retirar esa cantidad de dinero");
+        }
+
+        [Test]
+        public void RetiroInCorrecto2()
+        {
+            cuenta.SaldoCuenta = 100000;
+            cuenta.Retirar(20000, "valledupar");
+            cuenta.Retirar(20000, "valledupar");
+            cuenta.Retirar(20000, "valledupar");
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cuenta.Retirar(20000, "valledupar"));
+            Assert.AreEqual(ex.Message, "No se puede retirar esa cantidad de dinero");
+        }
+
     }
 }
