@@ -80,7 +80,38 @@ namespace Domain.Entities
         }
         public void Retirar(double valor, string ciudad)
         {
-            throw new NotImplementedException();
+            //formula de 4 X 1000
+            valor = valor + ((valor*4)/1000);
+
+            if (valor < 0)
+            {
+                throw new InvalidOperationException("El retiro debe de ser mayor a 0");
+
+            }
+            else
+            {
+                DateTime fechaActual = DateTime.Today;
+                Retiro retiro = new Retiro();
+                retiro.año = fechaActual.Year.ToString();
+                retiro.mes = fechaActual.Month.ToString();
+                retiro.Cuenta = NumeroCuenta;
+                retiro.FechaMovimiento = fechaActual;
+
+                //el valor maximo a retirar
+                double tope = SaldoCuenta + credito.CupoSobregiro;
+                
+                
+                if (valor <= tope)
+                {
+                    SaldoCuenta = SaldoCuenta - valor;
+                    this.retiros.Add(retiro);
+                    GuardarMovimieto("Retiro cuenta de corriete", 0, retiro.ValorRetiro, ciudad);
+                }
+                else
+                {
+                    throw new InvalidOperationException("No se puede retirar esa cantidad de dinero");
+                }
+            }
         }
     }
 }
