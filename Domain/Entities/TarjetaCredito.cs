@@ -46,8 +46,54 @@ namespace Domain.Entities
                     abono.ValorAbonado = valor;
 
                     abonos.Add(abono);
+
+                    GuardarMovimieto("Abono tarjeta de credito", abono.ValorAbonado, 0, null);
+
                 }
             }
+        }
+
+        public void Avance(double valor,string ciudad)
+        {
+            if (valor <= 0)
+            {
+                throw new InvalidOperationException("El avance debe de ser mayor a 0");
+            }
+            else
+            {
+                if (valor > CupoTargeta)
+                {
+                    throw new InvalidOperationException("El valor maximo del avance es " + CupoTargeta);
+                }
+                else
+                {
+                    CupoTargeta = CupoTargeta - valor;
+                    SaldoTargeta = SaldoTargeta + valor;
+
+                    Avance avance = new Avance();
+                    avance.FechaMovimiento = DateTime.Today;
+                    avance.año = DateTime.Today.Year.ToString();
+                    avance.mes = DateTime.Today.Month.ToString();
+                    avance.ValorAvance = valor;
+
+                    this.avances.Add(avance);
+                    GuardarMovimieto("Avance tarjeta de credito", avance.ValorAvance, 0, ciudad);
+
+                }
+            }
+        }
+
+
+        public void GuardarMovimieto(string tipo, double valorRetiro, double valorConsignacion, string ciudad)
+        {
+            MovimientoFinanciero movimiento = new MovimientoFinanciero();
+            movimiento.City = ciudad;
+            movimiento.FechaMovimiento = DateTime.Today;
+            movimiento.TipoMovimiento = tipo;
+            movimiento.ValorConsignacion = valorConsignacion;
+            movimiento.ValorRetiro = valorRetiro;
+
+            this.movimientoFinancieros.Add(movimiento);
         }
     }
 }

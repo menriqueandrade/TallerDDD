@@ -57,5 +57,47 @@ namespace Domain.test
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => tarjeta.Abonar(1600000));
             Assert.AreEqual(ex.Message, "El valor maximo que puede abonar es 1500000");
         }
+
+        [Test]
+        public void AvanceNegativo()
+        {
+            tarjeta.CupoTargeta = 500000;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => tarjeta.Avance(-20000, "valledupar"));
+            Assert.AreEqual(ex.Message, "El avance debe de ser mayor a 0");
+        }
+
+        [Test]
+        public void AvanceCorrecto()
+        {
+            tarjeta.CupoTargeta = 500000;
+            tarjeta.Avance(200000, "valledupar");
+            Assert.AreEqual(tarjeta.CupoTargeta, 300000);
+        }
+
+        [Test]
+        public void AvanceCorrectoPosterior()
+        {
+            tarjeta.CupoTargeta = 500000;
+            tarjeta.Avance(200000, "valledupar");
+            tarjeta.Avance(200000, "valledupar");
+            Assert.AreEqual(tarjeta.CupoTargeta, 100000);
+        }
+
+        [Test]
+        public void RetiroInCorrecto()
+        {
+            tarjeta.CupoTargeta = 500000;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => tarjeta.Avance(1000000, "valledupar"));
+            Assert.AreEqual(ex.Message, "El valor maximo del avance es 500000");
+        }
+
+        [Test]
+        public void RetiroInCorrectoPosterior()
+        {
+            tarjeta.CupoTargeta = 500000;
+            tarjeta.Avance(200000, "valledupar");
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => tarjeta.Avance(301000, "valledupar"));
+            Assert.AreEqual(ex.Message, "El valor maximo del avance es 300000");
+        }
     }
 }
