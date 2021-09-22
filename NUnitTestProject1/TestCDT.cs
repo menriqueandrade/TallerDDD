@@ -20,6 +20,7 @@ namespace Domain.test
             cdt.FechaApertura = new DateTime(2021, 1, 1);
             cdt.FechaCierre = new DateTime(2021, 9, 1);
             cdt.plazo = 9;
+            cdt.Interes = 0.06;
         }
 
 
@@ -58,6 +59,50 @@ namespace Domain.test
             cdt.Consignar(1000000, "valledupar");
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cdt.Consignar(1000000, "valledupar"));
             Assert.AreEqual(ex.Message, "solo se puede realizar una consignacion");
+        }
+
+        [Test]
+        public void RetiroNegativo()
+        {
+            cdt.SaldoCuenta = 1000000;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cdt.Retirar(-20000, "valledupar"));
+            Assert.AreEqual(ex.Message, "El retiro debe de ser mayor a 0");
+        }
+
+        [Test]
+        public void RetiroCorrecto()
+        {
+            cdt.SaldoCuenta = 1000000;
+            cdt.Retirar(100000, "valledupar");
+            Assert.AreEqual(cdt.SaldoCuenta, 900000);
+        }
+
+        [Test]
+        public void RetiroCorrecto2()
+        {
+            cdt.SaldoCuenta = 1000000;
+            cdt.Retirar(100000, "valledupar");
+            cdt.Retirar(200000, "valledupar");
+            Assert.AreEqual(cdt.SaldoCuenta, 700000);
+        }
+
+        [Test]
+        public void RetiroInCorrecto()
+        {
+            cdt.SaldoCuenta = 1000000;
+            cdt.FechaCierre = new DateTime(2021, 12, 1);
+            cdt.plazo = 12;
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cdt.Retirar(40000, "valledupar"));
+            Assert.AreEqual(ex.Message, "Aun no se ha cumplido el plazo del CDT");
+        }
+
+        [Test]
+        public void RetiroInCorrecto2()
+        {
+            cdt.SaldoCuenta = 1000000;
+            cdt.Retirar(900000, "valledupar");
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cdt.Retirar(120000, "valledupar"));
+            Assert.AreEqual(ex.Message, "La cantidad maxima a retirar es de 100000");
         }
     }
 }

@@ -96,6 +96,7 @@ namespace Domain.Entities
                 retiro.mes = fechaActual.Month.ToString();
                 retiro.Cuenta = NumeroCuenta;
                 retiro.FechaMovimiento = fechaActual;
+                retiro.ValorRetiro = valor;
 
                 //el valor maximo a retirar
                 double tope = SaldoCuenta + credito.CupoSobregiro;

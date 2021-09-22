@@ -12,6 +12,7 @@ namespace Domain.Entities
         public string NombreCuenta { get; set; }
         public double SaldoCuenta { get; set; }
         public int plazo { get; set; }
+        public double Interes { get; set; }
         public DateTime FechaApertura { get; set; }
         public DateTime FechaCierre { get; set; }
         public List<Retiro> retiros { get; set; }
@@ -61,7 +62,58 @@ namespace Domain.Entities
 
         public void Retirar(double valor, string ciudad)
         {
-            
+            if (valor < 0)
+            {
+                throw new InvalidOperationException("El retiro debe de ser mayor a 0");
+
+            }
+            else
+            {
+                DateTime fechaActual = DateTime.Today;
+                Retiro retiro = new Retiro();
+                retiro.año = fechaActual.Year.ToString();
+                retiro.mes = fechaActual.Month.ToString();
+                retiro.Cuenta = NumeroCuenta;
+                retiro.FechaMovimiento = fechaActual;
+
+                if (DateTime.Compare(FechaCierre, fechaActual) > 0)
+                {
+                    throw new InvalidOperationException("Aun no se ha cumplido el plazo del CDT");
+                }
+                else
+                {
+                    //numero de retiros que llevo
+                    int numeroRetiros = 0;
+                    foreach (var item in retiros)
+                    {
+                        numeroRetiros += 1;
+                    }
+
+                    if (valor > SaldoCuenta)
+                    {
+                        throw new InvalidOperationException("La cantidad maxima a retirar es de "+SaldoCuenta);
+                    }
+                    else{
+                        // si no hay retiros en el primer retiro liquido intereses
+                        if (numeroRetiros == 0)
+                        {
+                            //sumo los intereses al saldo si no hay retiros
+                            double Intereses = SaldoCuenta + ((SaldoCuenta * Interes) / 12) * plazo;
+                            SaldoCuenta = SaldoCuenta + Intereses;
+                            //retiro el valor, mas los intereses
+                            valor = valor + Intereses;
+                            SaldoCuenta = SaldoCuenta - valor;
+                        }
+                        else {
+                            SaldoCuenta = SaldoCuenta - valor;
+                        }
+
+                        retiro.ValorRetiro = valor;
+                        retiros.Add(retiro);
+                        GuardarMovimieto("Retiro CDT", retiro.ValorRetiro, 0, ciudad);
+                    }
+                }
+            }
         }
 
         public void GuardarMovimieto(string tipo, double valorRetiro, double valorConsignacion, string ciudad)

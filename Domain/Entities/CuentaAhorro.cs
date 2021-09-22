@@ -100,6 +100,7 @@ namespace Domain.Entities
                 retiro.mes = fechaActual.Month.ToString();
                 retiro.Cuenta = NumeroCuenta;
                 retiro.FechaMovimiento = fechaActual;
+                retiro.ValorRetiro = valor;
 
                 //veo si van mas de 3 retiros
                 int numeroRetiros = 0;
