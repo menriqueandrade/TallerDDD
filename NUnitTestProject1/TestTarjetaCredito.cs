@@ -20,9 +20,9 @@ namespace Domain.test
             tarjeta.SaldoTargeta = 2000000;
         }
 
-
+        //HU 5. 
         [Test]
-        public void ConsignacionNegativa()
+        public void AbonoNegativo()
         {
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => tarjeta.Abonar(-20000));
             Assert.AreEqual(ex.Message, "La consignacion debe de ser mayor a 0");
@@ -57,7 +57,7 @@ namespace Domain.test
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => tarjeta.Abonar(1600000));
             Assert.AreEqual(ex.Message, "El valor maximo que puede abonar es 1500000");
         }
-
+        //HU 6. 
         [Test]
         public void AvanceNegativo()
         {

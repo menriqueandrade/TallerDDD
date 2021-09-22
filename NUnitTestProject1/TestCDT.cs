@@ -15,7 +15,7 @@ namespace Domain.test
             cdt = new CDT();
 
             cdt.NumeroCuenta = "1234";
-            cdt.NombreCuenta = "fabian";
+            cdt.NombreCuenta = "manuel";
             cdt.SaldoCuenta = 0;
             cdt.FechaApertura = new DateTime(2021, 1, 1);
             cdt.FechaCierre = new DateTime(2021, 9, 1);
@@ -23,7 +23,7 @@ namespace Domain.test
             cdt.Interes = 0.06;
         }
 
-
+        //HU 7. 
         [Test]
         public void ConsignacionNegativa()
         {
@@ -60,7 +60,7 @@ namespace Domain.test
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cdt.Consignar(1000000, "valledupar"));
             Assert.AreEqual(ex.Message, "solo se puede realizar una consignacion");
         }
-
+        //HU 8. 
         [Test]
         public void RetiroNegativo()
         {

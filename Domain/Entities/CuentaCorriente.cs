@@ -78,10 +78,12 @@ namespace Domain.Entities
 
             this.movimientoFinancieros.Add(movimiento);
         }
+
         public void Retirar(double valor, string ciudad)
         {
             //formula de 4 X 1000
             valor = valor + ((valor*4)/1000);
+            //valor = 20000 + ((20000 * 4) / 1000);
 
             if (valor < 0)
             {

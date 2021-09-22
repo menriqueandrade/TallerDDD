@@ -118,6 +118,7 @@ namespace Domain.Entities
                     valor = valor + 5000;
                 }
 
+                //saldo minimo de la cuenta debe de ser 20000
                 if ((SaldoCuenta - valor) <= 20000)
                 {
                     throw new InvalidOperationException("No se puede retirar esa cantidad de dinero");

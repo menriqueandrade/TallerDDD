@@ -14,7 +14,7 @@ namespace Domain.test
         {
             cuenta = new CuentaCorriente();
             cuenta.NumeroCuenta = "1234";
-            cuenta.NombreCuenta = "fabian";
+            cuenta.NombreCuenta = "manuel";
             cuenta.Ciudad = "valledupar";
             cuenta.SaldoCuenta = 0;
 
@@ -26,7 +26,7 @@ namespace Domain.test
             cuenta.credito = credito;
         }
 
-
+        //HU 3. 
         [Test]
         public void ConsignacionNegativa()
         {
@@ -57,6 +57,7 @@ namespace Domain.test
             Assert.AreEqual(cuenta.SaldoCuenta, 149950);
         }
 
+        //HU 4. 
         [Test]
         public void RetiroNegativo()
         {
@@ -82,15 +83,15 @@ namespace Domain.test
             cuenta.Retirar(20000, "valledupar");
             Assert.AreEqual(cuenta.SaldoCuenta, -10240);
         }
-
+        //no se puede retirar por el iva
         [Test]
         public void RetiroInCorrecto()
         {
             cuenta.SaldoCuenta = 50000;
-            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cuenta.Retirar(750000, "valledupar"));
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cuenta.Retirar(75000, "valledupar"));
             Assert.AreEqual(ex.Message, "No se puede retirar esa cantidad de dinero");
         }
-
+        //no se puede retirar por el iva
         [Test]
         public void RetiroInCorrecto2()
         {
@@ -98,6 +99,7 @@ namespace Domain.test
             cuenta.Retirar(20000, "valledupar");
             cuenta.Retirar(20000, "valledupar");
             cuenta.Retirar(20000, "valledupar");
+            // haciendo los 3 retiros -10240 tenia -25000 y me quedan -14820
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cuenta.Retirar(15000, "valledupar"));
             Assert.AreEqual(ex.Message, "No se puede retirar esa cantidad de dinero");
            

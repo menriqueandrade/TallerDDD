@@ -16,12 +16,12 @@ namespace Domain.Test
             cuenta = new CuentaAhorro();
 
             cuenta.NumeroCuenta = "1234";
-            cuenta.NombreCuenta = "fabian";
+            cuenta.NombreCuenta = "manuel";
             cuenta.Ciudad = "valledupar";
             cuenta.SaldoCuenta = 0;
         }
-       
 
+        //El valor de la consignación debe ser mayor a 0
         [Test]
         public void ConsignacionNegativa()
         {         
@@ -29,6 +29,7 @@ namespace Domain.Test
             Assert.AreEqual(ex.Message, "La consignacion debe de ser mayor a 0");
         }
 
+        // La consignación inicial debe ser mayor o igual a 50 mil pesos
         [Test]
         public void ConsignacionInicialInCorrecta()
         {         
@@ -40,8 +41,8 @@ namespace Domain.Test
         [Test]
         public void ConsignacionInicialCorrecta()
         {
-            cuenta.Consignar(50000, "valledupar");
-            Assert.AreEqual(cuenta.SaldoCuenta, 50000);
+            cuenta.Consignar(100000, "valledupar");
+            Assert.AreEqual(cuenta.SaldoCuenta, 100000);
         }
 
         [Test]
@@ -52,6 +53,7 @@ namespace Domain.Test
             Assert.AreEqual(cuenta.SaldoCuenta, 99950);
         }
 
+        //La consignación nacional (a una cuenta de otra ciudad) tendrá un costo de $10 mil pesos
         [Test]
         public void ConsignacionPosteriorInicialCorrecta2()
         {
@@ -60,6 +62,7 @@ namespace Domain.Test
             Assert.AreEqual(cuenta.SaldoCuenta, 89950);
         }
 
+        //Historia 2 desde retiro en adelante
         [Test]
         public void RetiroNegativo()
         {
@@ -76,17 +79,19 @@ namespace Domain.Test
             Assert.AreEqual(cuenta.SaldoCuenta, 30000);
         }
 
+        //Del cuarto retiro en adelante del mes tendrán un valor de 5 mil peso
         [Test]
-        public void RetiroCorrecto2()
+        public void RetiroCorrectoSumando5000()
         {
             cuenta.SaldoCuenta = 100000;
             cuenta.Retirar(20000, "valledupar");
             cuenta.Retirar(20000, "valledupar");
             cuenta.Retirar(20000, "valledupar");
-            cuenta.Retirar(5000, "valledupar");
-            Assert.AreEqual(cuenta.SaldoCuenta, 30000);
+            cuenta.Retirar(7000, "valledupar");
+            Assert.AreEqual(cuenta.SaldoCuenta, 28000);
         }
 
+        //El saldo mínimo de la cuenta deberá ser de 20 mil pesos. 
         [Test]
         public void RetiroInCorrecto()
         {
@@ -94,7 +99,7 @@ namespace Domain.Test
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => cuenta.Retirar(40000, "valledupar"));
             Assert.AreEqual(ex.Message, "No se puede retirar esa cantidad de dinero");
         }
-
+        //El saldo mínimo de la cuenta deberá ser de 20 mil pesos. 
         [Test]
         public void RetiroInCorrecto2()
         {
